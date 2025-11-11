@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estacionamiento Imperador</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: #1a3a8f;
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 16px;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        h2 {
+            font-size: 22px;
+            color: #1a3a8f;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            padding: 0 20px;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            min-width: 100px;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1a3a8f;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        hr {
+            border: none;
+            height: 1px;
+            background: #ddd;
+            margin: 25px 20px;
+        }
+        
+        .release-section {
+            padding: 0 20px 20px;
+        }
+        
+        .release-title {
+            font-size: 18px;
+            color: #1a3a8f;
+            margin-bottom: 15px;
+        }
+        
+        .release-instructions {
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .sections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+        
+        .section {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .section-letter {
+            font-weight: bold;
+            color: #1a3a8f;
+            font-size: 18px;
+        }
+        
+        .section-count {
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        
+        .parking-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin: 25px 0;
+            padding: 0 20px;
+        }
+        
+        .parking-space {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 5px;
+            padding: 15px 5px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .parking-space.occupied {
+            background: #ffebee;
+            border-color: #f44336;
+            color: #c62828;
+        }
+        
+        .parking-space:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .release-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .btn {
+            background: #1a3a8f;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #2d5ba9;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+            background: #f0f0f0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 15px 0 10px;
+            color: #1a3a8f;
+            font-weight: bold;
+        }
+        
+        .section-header {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-weight: bold;
+            color: #1a3a8f;
+            margin: 15px 0 5px;
+            padding: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+               /* Estilos para el ticket */
+        .ticket-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .ticket-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        
+        .ticket {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border: 2px solid #1a3a8f;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .ticket-header {
+            text-align: center;
+            border-bottom: 2px solid #1a3a8f;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .ticket-title {
+            font-size: 1.4rem;
+            color: #1a3a8f;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .ticket-info {
+            text-align: left;
+            margin: 15px 0;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 5px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .info-value {
+            color: #1a3a8f;
+            font-weight: bold;
+        }
+        
+        .barcode {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            margin: 15px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .ticket-footer {
+            text-align: center;
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 15px;
+        }
+        
+        .print-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        
+        .print-btn:hover {
+            background: #218838;
+        }
+        
+        .close-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        
+        .close-btn:hover {
+            background: #5a6268;
+        }
+        @media (max-width: 768px) {
+            .parking-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .stat-box {
+                width: 80%;
+            }
+            
+            .back-btn {
+                position: relative;
+                left: 0;
+                top: 0;
+                transform: none;
+                margin-bottom: 15px;
+                display: inline-flex;
+            }
+            
+            header {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .parking-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button class="back-btn" id="backButton">
+                ← Volver al Sistema
+            </button>
+            <h1>Estacionamiento de MOTOCICLETAS</h1>
+            <h2>Imperador</h2>
+        </header>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number" id="occupied-count">0</div>
+                <div class="stat-label">Ocupados</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="available-count">20</div>
+                <div class="stat-label">Disponibles</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">20</div>
+                <div class="stat-label">Total</div>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <div class="release-section">
+            <div class="release-title">Liberar Espacio</div>
+            <div class="release-instructions">Importe el código del espacio</div>
+            
+            <div class="section-title">Espacios de Estacionamiento (H-1 a L-4)</div>
+            <div class="parking-grid" id="parking-grid">
+                <!-- Los espacios se generarán con JavaScript -->
+            </div>
+            <
+            <div class="release-form">
+                <div class="form-group">
+                    <label for="space-code">Código del espacio a liberar</label>
+                    <input type="text" id="space-code" placeholder="Ejemplo: H-1">
+                </div>
+                <button class="btn" id="release-btn">Liberar Espacio</button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Sistema de Estacionamiento Imperador &copy; 2025</p>
+        </footer>
+    </div>
+<!-- Modal para mostrar el ticket -->
+    <div class="ticket-modal" id="ticketModal">
+        <div class="ticket-container">
+            <h3>Ticket Generado</h3>
+            <div class="ticket" id="ticketContent">
+                <!-- El contenido del ticket se generará aquí -->
+            </div>
+            <button class="print-btn" onclick="printTicket()">🖨️ Imprimir Ticket</button>
+            <button class="close-btn" onclick="closeTicket()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        // Botón de regreso
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.location.href = 'sistema.html';
+        });
+
+        // Generar los espacios de estacionamiento de A-1 a G-5
+        const parkingGrid = document.getElementById('parking-grid');
+        const sections = ['H', 'I', 'J', 'K', 'L'];
+        const spacesPerSection = 4;
+        const totalSpaces = sections.length * spacesPerSection; // 20 espacios
+        
+        // Cargar estado desde localStorage o inicializar
+        let parkingState = JSON.parse(localStorage.getItem('parkingState')) || {};
+        
+        // Crear espacios de estacionamiento
+        sections.forEach(section => {
+            // Añadir encabezado de sección
+            const sectionHeader = document.createElement('div');
+            sectionHeader.className = 'section-header';
+            sectionHeader.textContent = `Sección ${section}`;
+            parkingGrid.appendChild(sectionHeader);
+            
+            // Crear 5 espacios para cada sección
+            for (let i = 1; i <= spacesPerSection; i++) {
+                const spaceCode = `${section}-${i}`;
+                const space = document.createElement('div');
+                space.className = 'parking-space';
+                space.textContent = spaceCode;
+                space.dataset.section = section;
+                space.dataset.number = i;
+                
+                // Verificar estado guardado o inicializar como libre
+                if (parkingState[spaceCode] === true) {
+                    space.classList.add('occupied');
+                }
+                // Evento para marcar como ocupado al hacer clic - CON GENERACIÓN DE TICKET
+                space.addEventListener('click', function() {
+                    if (!this.classList.contains('occupied')) {
+                        this.classList.add('occupied');
+                        parkingState[spaceCode] = true;
+                        localStorage.setItem('parkingState', JSON.stringify(parkingState));
+                        updateStats();
+                        
+                        // Generar y mostrar ticket
+                        generateTicket(spaceCode);
+                    }
+                });
+                
+                // Evento para marcar como ocupado al hacer clic - CON REDIRECCIÓN
+                space.addEventListener('click', function() {
+                    if (!this.classList.contains('occupied')) {
+                        this.classList.add('occupied');
+                        parkingState[spaceCode] = true;
+                        localStorage.setItem('parkingState', JSON.stringify(parkingState));
+                        updateStats();
+                        
+                        // Mostrar confirmación y redirigir después de 2 segundos
+                        alert(`Espacio ${spaceCode} marcado como OCUPADO\nRedirigiendo al sistema...`);
+                        
+                        // Redirigir a sistema.html después de 2 segundos
+                        setTimeout(function() {
+                            window.location.href = 'sistema.html';
+                        }, 500);
+                    }
+                });
+
+                
+                parkingGrid.appendChild(space);
+            }
+        });
+        
+        // Funcionalidad para liberar espacio
+        document.getElementById('release-btn').addEventListener('click', function() {
+            const spaceCode = document.getElementById('space-code').value.trim().toUpperCase();
+            
+            if (!spaceCode) {
+                alert('Por favor, ingrese un código de espacio válido.');
+                return;
+            }
+            
+            // Validar formato del código
+            const spaceCodeRegex = /^[H-Lh-l]-\d+$/;
+            if (!spaceCodeRegex.test(spaceCode)) {
+                alert('El código debe tener el formato: Letra-Número (Ejemplo: H-1)\nLetras válidas: H a L\nNúmeros válidos: 1 a 4');
+                return;
+            }
+            
+            // Verificar que el número esté entre 1 y 5
+            const spaceNumber = parseInt(spaceCode.split('-')[1]);
+            if (spaceNumber < 1 || spaceNumber > 5) {
+                alert('El número del espacio debe estar entre 1 y 5.');
+                return;
+            }
+            
+            // Buscar el espacio en la cuadrícula
+            const spaces = document.querySelectorAll('.parking-space');
+            let spaceFound = false;
+            
+            spaces.forEach(space => {
+                if (space.textContent === spaceCode) {
+                    spaceFound = true;
+                    if (space.classList.contains('occupied')) {
+                        space.classList.remove('occupied');
+                        parkingState[spaceCode] = false;
+                        localStorage.setItem('parkingState', JSON.stringify(parkingState));
+                        alert(`El espacio ${spaceCode} ha sido liberado exitosamente.`);
+                        updateStats();
+                    } else {
+                        alert(`El espacio ${spaceCode} ya está disponible.`);
+                    }
+                }
+            });
+            
+            if (!spaceFound) {
+                alert(`El espacio ${spaceCode} no existe.`);
+            }
+            
+            document.getElementById('space-code').value = '';
+
+        });
+
+        // Función para generar ticket
+        function generateTicket(spaceCode) {
+            const now = new Date();
+            const ticketNumber = 'TKT-' + now.getTime().toString().slice(-6);
+            const entryTime = now.toLocaleString('es-ES');
+            
+            // Calcular hora de salida estimada (4 horas después)
+            const exitTime = new Date(now.getTime() + 4 * 60 * 60 * 1000);
+            const exitTimeFormatted = exitTime.toLocaleString('es-ES');
+            
+            const ticketHTML = `
+                <div class="ticket-header">
+                    <div class="ticket-title">TICKET DE ESTACIONAMIENTO</div>
+                    <div>Estacionamiento Imperador</div>
+                </div>
+                <div class="ticket-info">
+                    <div class="info-row">
+                        <span class="info-label">N° de Ticket:</span>
+                        <span class="info-value">${ticketNumber}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Espacio:</span>
+                        <span class="info-value">${spaceCode}</span>
+                    </div>
+       
+                    <div class="info-row">
+                        <span class="info-label">Tarifa:</span>
+                        <span class="info-value">$25/TIEMPO LIBRE</span>
+                    </div>
+                </div>
+                <div class="barcode">
+                    || ${spaceCode} || ${ticketNumber} ||
+                </div>
+                <div class="ticket-footer">
+                    <strong>¡CONSERVE ESTE TICKET!</strong><br>
+                    Es necesario para liberar su espacio
+                </div>
+            `;
+            
+            document.getElementById('ticketContent').innerHTML = ticketHTML;
+            document.getElementById('ticketModal').style.display = 'flex';
+            
+            // Guardar información del ticket en localStorage
+            const ticketInfo = {
+                spaceCode: spaceCode,
+                ticketNumber: ticketNumber,
+                entryTime: entryTime,
+                exitTime: exitTimeFormatted,
+                timestamp: now.getTime()
+            };
+            
+            // Guardar en localStorage
+            let tickets = JSON.parse(localStorage.getItem('parkingTickets')) || {};
+            tickets[spaceCode] = ticketInfo;
+            localStorage.setItem('parkingTickets', JSON.stringify(tickets));
+        }
+        
+        // Función para imprimir ticket
+        function printTicket() {
+            const ticketContent = document.getElementById('ticketContent').innerHTML;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Ticket de Estacionamiento</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .ticket { border: 2px solid #000; padding: 20px; max-width: 300px; }
+                        .ticket-header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
+                        .ticket-title { font-size: 18px; font-weight: bold; }
+                        .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+                        .barcode { font-family: 'Courier New', monospace; text-align: center; margin: 15px 0; font-size: 16px; }
+                        .ticket-footer { text-align: center; font-size: 12px; margin-top: 15px; }
+                        @media print { body { margin: 0; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="ticket">${ticketContent}</div>
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                            setTimeout(function() { window.close(); }, 500);
+                        }
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+        
+        // Función para cerrar el modal del ticket
+        function closeTicket() {
+            document.getElementById('ticketModal').style.display = 'none';
+            // Redirigir a sistema.html después de cerrar el ticket
+            setTimeout(function() {
+                window.location.href = 'sistema.html';
+            }, 500);
+        }
+
+        
+        // Actualizar estadísticas
+        function updateStats() {
+            const occupiedSpaces = document.querySelectorAll('.parking-space.occupied').length;
+            const availableSpaces = totalSpaces - occupiedSpaces;
+            
+            document.getElementById('occupied-count').textContent = occupiedSpaces;
+            document.getElementById('available-count').textContent = availableSpaces;
+        }
+        
+        // Inicializar estadísticas
+        updateStats();
+        
+        // Permitir usar Enter para liberar espacio
+        document.getElementById('space-code').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('release-btn').click(); 
+
+            }
+        });
+    </script>
+</body>
+</html>
